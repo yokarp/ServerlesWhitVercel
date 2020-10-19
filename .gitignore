@@ -1,0 +1,9 @@
+.now
+node_modules
+
+.versel.json
+
+# Environment Variables
+.env
+.env.build
+.vercel
