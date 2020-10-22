@@ -12,7 +12,7 @@ router.post('/register', (req, res) => {
 */
 
 const singToken = (_id) => {
-  return jwt.sing({ _id }, 'mi-secreto', {
+  return jwt.sign({ _id }, 'mi-secreto', {
     expiresIn: 60 * 60 * 24 * 365,
   })
 }
