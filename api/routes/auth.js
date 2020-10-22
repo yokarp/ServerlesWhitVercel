@@ -1,10 +1,15 @@
 const express = require('express')
 const crypto = require('crypto')
 const jwt = require('jsonwebtoken')
-const Meals = require('../models/Users')
-const isAuthenticated = require('../auth')
+const Users = require('../models/Users')
+const { isAuthenticated } = require('../auth')
 
 const router = express.Router()
+/*
+router.post('/register', (req, res) => {
+  res.send('Soy registro')
+})
+*/
 
 const singToken = (_id) => {
   return jwt.sing({ _id }, 'mi-secreto', {
@@ -28,7 +33,7 @@ router.post('/register', (req, res) => {
             password: encryptedPassword,
             salt: newSalt,
           }).then(() => {
-            res.send('usuario creado con éxito')
+            res.send('usuario creado con exito')
           })
         })
     })
@@ -42,20 +47,20 @@ router.post('/login', (req, res) => {
       if(!user){
         return res.send('usuario y/o contaseña incorrecta')
       }
-      crypto.pbkdf2(password, user.salt, 10000, 64, 'sha1', (err,key) => {
+      crypto.pbkdf2(password, user.salt, 10000, 64, 'sha1', (err, key) => {
         const encryptedPassword = key.toString('base64')
         if( user.password === encryptedPassword){
           const token = singToken(user._id)
           return res.send({ token })
         }
-        return res.send('Usuario y/o contraseña incorrecta')
+        return res.send('usuario y/o contraseña incorrecta')
       })
     })
 })
 
+
 router.get('/me', isAuthenticated, (req,res) =>{
   res.send(req.user)
 })
-
 
 module.exports = router
